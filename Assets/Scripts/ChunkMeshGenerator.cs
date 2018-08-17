@@ -4,13 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(Chunk))]
 public class ChunkMeshGenerator : MonoBehaviour
 {
 
     private MeshFilter filter;
 
+    private void Awake()
+    {
+        var chunk = GetComponent<Chunk>();
+        if(chunk==null)
+        {
+            throw new Exception("No chunk found for mesh generator");
+        }
+        chunk.OnBlockUpdate.AddListener(()=> BlockUpdate(chunk));
+    }
+
     void BlockUpdate(Chunk updatedChunk)
     {
+        Debug.Log("Updating Mesh");
         var generatedMesh = GenerateMesh(updatedChunk);
         if (filter == null)
         {

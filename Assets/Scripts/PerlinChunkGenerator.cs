@@ -2,35 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PerlinChunkGenerator : MonoBehaviour {
+public class PerlinChunkGenerator : MonoBehaviour
+{
 
     public int seed;
     private Chunk chunk;
 
-	// Use this for initialization
-	void Start () {
+    void Start()
+    {
         chunk = GetComponent<Chunk>();
-
         Generate(chunk, seed);
-	}
+    }
 
     private void Generate(Chunk chunk, int seed)
     {
         Random.InitState(seed);
+        Color[,,] blocks = new Color[chunk.width, chunk.width, chunk.width];
 
-        for(int x=0;x<chunk.width;x++)
-            for (int y = 0; y < chunk.width; y++)
-                for (int z = 0; z < chunk.width; z++)
+
+        for (var z = 0; z < chunk.width; ++z)
+        {
+            for (var y = 0; y < chunk.width; ++y)
+            {
+                for (var x = 0; x < chunk.width; ++x)
                 {
-                    chunk.SetBlock(x, y, z, Color.yellow);
+                   // TODO: This needs work.
+                   var gen = (
+                       Mathf.PerlinNoise(x / (float)chunk.width, y / (float)chunk.width) +
+                       Mathf.PerlinNoise(x / (float)chunk.width, z / (float)chunk.width) +
+                       Mathf.PerlinNoise(z / (float)chunk.width, y / (float)chunk.width)
+                       ) / 3.0f;
+                    //var gen = Random.Range(0f, 1f);
+                    var color = default(Color);
+                    if (gen > 0.75)
+                    {
+                        color = Color.red;
+                    }
+                    else if (gen > 0.5)
+                    {
+                        color = Color.green;
+                    }
+                    else if (gen > 0.25)
+                    {
+                        color = Color.blue;
+                    }
+                    blocks[x, y, z] = color;
                 }
+            }
+        }
+        chunk.FillBlocks(blocks);
     }
-
-    // Update is called once per frame
-    void Update () {
-	}
-
 }
-
-
-
