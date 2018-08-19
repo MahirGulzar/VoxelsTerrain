@@ -15,9 +15,16 @@ public class CreateMesh : MonoBehaviour
     public int DefaultTileY;
     public Texture2D Texture;
 
+    public Renderer renderer;
+
+    private Texture2D heigtmapTexture;
+
     void OnEnable()
     {
+        renderer.material.mainTexture = pixelTexture();
+        heigtmapTexture = (Texture2D)renderer.material.mainTexture;
         CreatePlane(TileWidth, TileHeight, TileGridWidth, TileGridHeight);
+        
     }
 
     void Update()
@@ -118,4 +125,37 @@ public class CreateMesh : MonoBehaviour
         uvs.Add(new Vector2((tileColumn + 1) * tileSizeX, (tileRow + 1) * tileSizeY));
         uvs.Add(new Vector2(tileColumn * tileSizeX, (tileRow + 1) * tileSizeY));
     }
+
+
+    public static Texture2D pixelTexture()
+    {
+        Texture2D generatedTexture = new Texture2D(70, 70);
+        for(int i=0;i<70; i++)
+        {
+            for(int j=0;j<70;j++)
+            {
+
+                Color color;
+
+                int rand = Random.Range(0, 2);
+                if(rand==0)
+                {
+                    color = Color.black;
+                }
+                else
+                {
+                    color = Color.white;
+                }
+                generatedTexture.SetPixel(i, j, color);
+            }
+        }
+
+        generatedTexture.wrapMode = TextureWrapMode.Clamp;
+        generatedTexture.filterMode = FilterMode.Point;
+        generatedTexture.Apply();
+
+        return generatedTexture;
+    }
 }
+
+
