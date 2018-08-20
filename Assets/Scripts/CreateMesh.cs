@@ -19,23 +19,39 @@ public class CreateMesh : MonoBehaviour
 
     private Texture2D heigtmapTexture;
 
+    MeshFilter MeshFilter;
     void OnEnable()
     {
         renderer.material.mainTexture = pixelTexture();
         heigtmapTexture = (Texture2D)renderer.material.mainTexture;
         CreatePlane(TileWidth, TileHeight, TileGridWidth, TileGridHeight);
-        
+        MeshFilter = GetComponent<MeshFilter>();
+
     }
 
     void Update()
     {
-        var tileColumn = Random.Range(0, NumTilesX);
-        var tileRow = Random.Range(0, NumTilesY);
+        //var tileColumn = Random.Range(0, NumTilesX);
+        //var tileRow = Random.Range(0, NumTilesY);
 
-        var x = Random.Range(0, TileGridWidth);
-        var y = Random.Range(0, TileGridHeight);
+        //var x = Random.Range(0, TileGridWidth);
+        //var y = Random.Range(0, TileGridHeight);
 
-        UpdateGrid(new Vector2(x, y), new Vector2(tileColumn, tileRow), TileWidth, TileHeight, TileGridWidth);
+        //UpdateGrid(new Vector2(x, y), new Vector2(tileColumn, tileRow), TileWidth, TileHeight, TileGridWidth);
+
+
+        Vector3[] verts = GetComponent<MeshFilter>().mesh.vertices;
+        Vector3[] DeformedVertices = new Vector3[GetComponent<MeshFilter>().mesh.vertices.Length];
+
+        for (int i = 0; i < DeformedVertices.Length; i++)
+        {
+            DeformedVertices[i] = new Vector3(verts[i].x, Random.Range(0, 2), verts[i].z);
+        }
+
+        GetComponent<MeshFilter>().mesh.vertices = DeformedVertices;
+        GetComponent<MeshFilter>().mesh.RecalculateNormals();
+
+
     }
 
     public void UpdateGrid(Vector2 gridIndex, Vector2 tileIndex, int tileWidth, int tileHeight, int gridWidth)
@@ -43,8 +59,10 @@ public class CreateMesh : MonoBehaviour
         var mesh = GetComponent<MeshFilter>().mesh;
         var uvs = mesh.uv;
 
-        var tileSizeX = 1.0f / NumTilesX;
-        var tileSizeY = 1.0f / NumTilesY;
+
+        // Changes here..
+        var tileSizeX = 1.0f ;
+        var tileSizeY = 1.0f;
 
         mesh.uv = uvs;
 
@@ -63,8 +81,10 @@ public class CreateMesh : MonoBehaviour
         mf.GetComponent<Renderer>().material.SetTexture("_MainTex", Texture);
         mf.mesh = mesh;
 
-        var tileSizeX = 1.0f / NumTilesX;
-        var tileSizeY = 1.0f / NumTilesY;
+
+        // Changes here..
+        var tileSizeX = 1.0f;
+        var tileSizeY = 1.0f;
 
         var vertices = new List<Vector3>();
         var triangles = new List<int>();
@@ -76,7 +96,8 @@ public class CreateMesh : MonoBehaviour
         {
             for (var y = 0; y < gridHeight; y++)
             {
-                AddVertices(tileHeight, tileWidth, y, x, vertices);
+                //AddVertices(tileHeight, tileWidth, y, x, vertices);
+                AddVertices(1, 1, y, x, vertices);
                 index = AddTriangles(index, triangles);
                 AddNormals(normals);
                 AddUvs(DefaultTileX, tileSizeY, tileSizeX, uvs, DefaultTileY);
@@ -92,10 +113,13 @@ public class CreateMesh : MonoBehaviour
 
     private static void AddVertices(int tileHeight, int tileWidth, int y, int x, ICollection<Vector3> vertices)
     {
-        vertices.Add(new Vector3((x * tileWidth), (y * tileHeight), 0));
-        vertices.Add(new Vector3((x * tileWidth) + tileWidth, (y * tileHeight), 0));
-        vertices.Add(new Vector3((x * tileWidth) + tileWidth, (y * tileHeight) + tileHeight, 0));
-        vertices.Add(new Vector3((x * tileWidth), (y * tileHeight) + tileHeight, 0));
+
+        int rand = Random.Range(0, 2);
+
+        vertices.Add(new Vector3((x * tileWidth), 0,(y * tileHeight)));
+        vertices.Add(new Vector3((x * tileWidth) + tileWidth,0,(y * tileHeight)));
+        vertices.Add(new Vector3((x * tileWidth) + tileWidth, 0,(y * tileHeight) + tileHeight));
+        vertices.Add(new Vector3((x * tileWidth), 0,(y * tileHeight) + tileHeight));
     }
 
     private static int AddTriangles(int index, ICollection<int> triangles)
@@ -129,10 +153,10 @@ public class CreateMesh : MonoBehaviour
 
     public static Texture2D pixelTexture()
     {
-        Texture2D generatedTexture = new Texture2D(70, 70);
-        for(int i=0;i<70; i++)
+        Texture2D generatedTexture = new Texture2D(100, 100);
+        for(int i=0;i<100; i++)
         {
-            for(int j=0;j<70;j++)
+            for(int j=0;j<100;j++)
             {
 
                 Color color;
