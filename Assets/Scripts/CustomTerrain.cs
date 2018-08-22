@@ -82,7 +82,8 @@ public class CustomTerrain : MonoBehaviour {
 
         CreatePlane();
 
-        this.GetComponent<Renderer>().material.SetTexture("_MainTex", newTexture);
+        //this.GetComponent<Renderer>().material.SetTexture("_MainTex", newTexture);
+        this.GetComponent<Renderer>().material.SetTexture("_MainTex", Texture2D.whiteTexture);
         this.GetComponent<Renderer>().material.SetTexture("_DispTex", newTexture);
     }
 
@@ -103,7 +104,7 @@ public class CustomTerrain : MonoBehaviour {
         newTexture.filterMode = FilterMode.Point;
         newTexture.Apply();
 
-        this.GetComponent<Renderer>().material.SetTexture("_MainTex", newTexture);
+        
         this.GetComponent<Renderer>().material.SetTexture("_DispTex", newTexture);
     }
 
@@ -286,7 +287,7 @@ public class CustomTerrain : MonoBehaviour {
         m.RecalculateBounds();
 
         if (addCollider)
-            this.gameObject.AddComponent(typeof(BoxCollider));
+            this.gameObject.AddComponent(typeof(MeshCollider));
 
     }
 }

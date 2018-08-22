@@ -368,7 +368,6 @@ GameObject:
   - component: {fileID: 1968038730}
   - component: {fileID: 1968038733}
   - component: {fileID: 1968038732}
-  - component: {fileID: 1968038734}
   m_Layer: 0
   m_Name: CustomPlane
   m_TagString: Untagged
@@ -387,13 +386,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed8aa621f66353429e7cb559bc9121e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  widthSegments: 20
-  lengthSegments: 20
+  widthSegments: 100
+  lengthSegments: 100
   width: 10
   length: 10
   orientation: 0
   anchor: 8
-  addCollider: 0
+  addCollider: 1
   createAtOrigin: 0
   twoSided: 0
   optionalName: 
@@ -452,17 +451,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1968038729}
   m_Mesh: {fileID: 0}
---- !u!114 &1968038734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1968038729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e53d35b0a08a284ca78082261680e1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2112172933
 GameObject:
   m_ObjectHideFlags: 0
