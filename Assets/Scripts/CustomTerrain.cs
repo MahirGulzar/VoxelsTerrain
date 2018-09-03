@@ -90,6 +90,7 @@ public class CustomTerrain : MonoBehaviour {
 
     private void Update()
     {
+        
         renderer.material.mainTexture = pixelTexture();
         heigtmapTexture = (Texture2D)renderer.material.mainTexture;
 
@@ -117,16 +118,18 @@ public class CustomTerrain : MonoBehaviour {
             {
 
                 Color color;
+                int rand = UnityEngine.Random.Range(0,256);
+                color = new Color32((byte)rand, (byte)rand, (byte)rand, 255);
 
-                int rand = UnityEngine.Random.Range(0, 2);
-                if (rand == 0)
-                {
-                    color = Color.black;
-                }
-                else
-                {
-                    color = Color.white;
-                }
+                //int rand = UnityEngine.Random.Range(0, 2);
+                //if (rand == 0)
+                //{
+                //    color = Color.black;
+                //}
+                //else
+                //{
+                //    color = Color.white;
+                //}
 
                 //if ((i > 20 && j > 40))
                 //{
